@@ -3,8 +3,11 @@
 This directory contains the exact production Solidity sources used for the two
 Robinhood Chain launchpad deployments:
 
-- `v2-beta/` — first deployment snapshot.
-- `v2/` — V2 deployment snapshot.
+- `v2-beta/` — only a few tokens are launched with this factory 
+- `v2/` — use this for all new launches
+
+Contracts above are identical except that V2 tokens are burnable and beta
+version tokens are not.
 
 In each version,
 `deployment.json` records the deployed addresses and transactions from that exact
@@ -22,7 +25,7 @@ deployment.
 Choose one snapshot and install its pinned Solidity dependencies:
 
 ```bash
-cd v2-beta # or: cd v2
+cd v2
 pnpm install
 FOUNDRY_PROFILE=production forge build --force --skip test --skip script --build-info
 ```
