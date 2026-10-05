@@ -1,0 +1,49 @@
+{
+  "name": "@clank-trade/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./client": "./client/index.ts"
+  },
+  "scripts": {
+    "build": "forge build --sizes",
+    "clean": "forge clean",
+    "compile": "forge build",
+    "coverage": "forge coverage --ir-minimum --exclude-tests --no-match-coverage '(^script/|contracts/test/)' --report summary --report lcov",
+    "format": "forge fmt && prettier --write --no-error-on-unmatched-pattern 'client/**/*.ts' 'config/**/*.ts' 'scripts/**/*.ts' 'protocol/**/*.ts' 'protocol*.json' 'protocol/**/*.json'",
+    "format:check": "forge fmt --check && prettier --check --no-error-on-unmatched-pattern 'client/**/*.ts' 'config/**/*.ts' 'scripts/**/*.ts' 'protocol/**/*.ts' 'protocol*.json' 'protocol/**/*.json'",
+    "lint": "pnpm typecheck && pnpm format:check",
+    "deploy:local": "forge script script/DeployLocal.s.sol:DeployLocal --rpc-url local --broadcast --slow",
+    "test": "forge test && pnpm test:client && pnpm test:protocol",
+    "test:protocol": "FOUNDRY_PROFILE=production forge build --skip test --skip script && node --import tsx --test protocol/*.spec.ts",
+    "test:client": "node --import tsx --test client/**/*.spec.ts",
+    "test:fork": "forge test --match-path 'test/fork/*.t.sol' -vvv",
+    "test:production": "FOUNDRY_PROFILE=production forge test && pnpm test:client && pnpm test:protocol",
+    "typecheck": "tsc --noEmit && tsc -p client/tsconfig.json",
+    "validate:robinhood": "node --import tsx scripts/validate-robinhood.ts",
+    "validate:router:live": "node --env-file-if-exists=../.env --import tsx client/uniswap-v4.live.ts",
+    "protocol:deploy": "node --import tsx protocol/deploy.ts",
+    "protocol:accept-ownership": "node --import tsx protocol/accept-ownership.ts",
+    "protocol:diff": "node --import tsx protocol/diff.ts",
+    "protocol:bytecode": "node --import tsx protocol/bytecode.ts",
+    "protocol:verify": "node --import tsx protocol/verify.ts",
+    "protocol:submit": "node --import tsx protocol/submit.ts"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.6.1",
+    "@uniswap/v4-core": "1.0.2",
+    "@uniswap/v4-periphery": "1.0.3",
+    "permit2": "github:Uniswap/permit2#cc56ad0f3439c502c246fc5cfcc3db92bb8b7219"
+  },
+  "devDependencies": {
+    "@safe-global/api-kit": "5.0.3",
+    "@safe-global/protocol-kit": "8.0.6",
+    "@types/node": "22.20.1",
+    "forge-std": "github:foundry-rs/forge-std#v1.16.2",
+    "prettier": "3.9.6",
+    "tsx": "^4.23.13",
+    "typescript": "6.0.3",
+    "viem": "2.56.1"
+  }
+}
