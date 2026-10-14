@@ -1,0 +1,11 @@
+# Foundry build artifacts and cache
+out/
+cache/
+
+# Installed dependencies
+node_modules/
+
+# Coverage and TypeScript build artifacts
+coverage/
+lcov.info
+*.tsbuildinfo
